@@ -1,0 +1,5 @@
+1. Login/ Signup Page
+2. All Trips
+3. Create Trip
+4. View Trip
+5. User Page with all his trips
