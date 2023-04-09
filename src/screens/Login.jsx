@@ -46,8 +46,8 @@ const LogIn = () => {
 export default LogIn;
 
 const SignIn = () => {
-	const [username, setUsername] = useState('shadankazmi');
-	const [password, setPassword] = useState('shadankazmi');
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 
 	const [passVis, setPassVis] = useState(false);

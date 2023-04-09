@@ -255,7 +255,7 @@ const CreateTripForm = () => {
 										/>
 									</div>
 								</div>
-								<div className='flex md:flex-row gap-2 justify-center sm:flex-col mb-4'>
+								<div className='flex sm:flex-col md:flex-row gap-2 justify-center flex-col mb-4'>
 									<div className='flex flex-col gap-2 flex-1'>
 										<div className='flex gap-2 items-center font-bold text-lg'>
 											Attractions
@@ -367,7 +367,7 @@ const CreateTripForm = () => {
 						</div>
 					))}
 				</div>
-				<div className='flex gap-2 w-full'>
+				<div className='flex gap-0 md:gap-2 w-full flex-col md:flex-row'>
 					<button
 						className='bg-primary hover:bg-primaryDark text-white px-2 py-4 mt-4 rounded-md w-full'
 						onClick={handleAddDay}

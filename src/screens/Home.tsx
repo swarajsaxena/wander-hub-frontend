@@ -29,7 +29,7 @@ const Home = () => {
 					{ bannerImage, title, likes, duration, _id, createdBy, description },
 					index
 				) => (
-					<Link className='h-full' to={`/trip/${_id}`} key={index}>
+					<Link className='h-full w-max' to={`/trip/${_id}`} key={index}>
 						<TripCard
 							bannerImage={bannerImage}
 							title={title}

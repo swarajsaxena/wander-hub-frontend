@@ -20,10 +20,10 @@ const TripCard = ({
 }: props) => {
 	const [srcImage, setSrcImage] = useState<string>(bannerImage);
 	return (
-		<TripCardComponent className='flex flex-col gap-4 max-w-sm rounded overflow-hidden shadow-sm hover:shadow-lg transition-all cursor-pointer border h-full'>
-			<div className='h-40 overflow-hidden relative flex items-center'>
+		<TripCardComponent className='flex flex-col gap-4 max-w-[20rem] sm:max-w-[15rem] lg:max-w-sm rounded overflow-hidden shadow-sm hover:shadow-lg transition-all cursor-pointer border h-full'>
+			<div className='sm:h-40 lg:h-40 overflow-hidden relative flex items-center'>
 				<img
-					className='w-full transition-all'
+					className='w-full h-full transition-all object-center object-cover'
 					alt='Sunset in the mountains'
 					src={srcImage}
 					onError={() => {

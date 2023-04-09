@@ -22,13 +22,20 @@ export const StyledBox = styled('div')`
 `;
 
 export const StyledGridBox = styled('div')`
-	max-width: 1080px;
-	/* height: 100%; */
 	gap: 1rem;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	align-items: center;
-	width: 100%;
+	width: max-content;
 	margin: 0 auto;
 	padding: 1rem 1rem 2rem 1rem;
+  
+  & {
+    @media (max-width: 1300px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 600px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
 `;
