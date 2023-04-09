@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiTrash } from 'react-icons/fi';
 import axios from 'axios';
+import { createNewTrip } from '../apiFunctions';
 
 const dataX = {
 	title: 'Exploring Delhi',
@@ -137,24 +138,12 @@ const CreateTripForm = () => {
 
 	const handleSubmit = e => {
 		e.preventDefault();
-		const data = { ...trip, duration: trip.days.length };
-
-		var config = {
-			method: 'post',
-			maxBodyLength: Infinity,
-			url: 'http://localhost:4000/api/newTrip',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			data: data,
-		};
-
-		axios(config)
-			.then(function (response) {
+		createNewTrip(trip)
+			.then(data => {
 				navigate('/');
-				console.log(response.data);
+				console.log(data);
 			})
-			.catch(function (error) {
+			.catch(error => {
 				console.log(error);
 			});
 	};

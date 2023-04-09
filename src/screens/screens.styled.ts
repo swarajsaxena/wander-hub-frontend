@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
 
-export const TripCardComponent = styled('nav')`
+export const TripCardComponent = styled('div')`
 	&:hover {
 		img {
 			transform: scale(1.2);
@@ -30,5 +30,5 @@ export const StyledGridBox = styled('div')`
 	align-items: center;
 	width: 100%;
 	margin: 0 auto;
-	padding: 2rem 1rem 4rem 1rem;
+	padding: 1rem 1rem 2rem 1rem;
 `;

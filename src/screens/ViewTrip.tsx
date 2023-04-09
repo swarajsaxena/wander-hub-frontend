@@ -7,142 +7,40 @@ import { StyledBox } from './screens.styled';
 import Loading from '../components/Loading';
 import Comment from '../components/Comment';
 import { useSelector } from 'react-redux';
+import { getOneTrip, postComment } from '../apiFunctions';
 
 const ViewTrip = () => {
-	const tripX = {
-		title: 'Hiking in the Rocky Mountains',
-		createdBy: 'Swaraj Saxena',
-		createdOn: new Date().toISOString(),
-		description:
-			'Hiking in the Rocky Mountains is an unforgettable adventure, offering breathtaking views of towering peaks, alpine lakes, and diverse wildlife. Trails range from easy walks to challenging treks, with opportunities for backpacking and camping. Experience the beauty of nature as you explore this iconic mountain range.',
-		duration: 3,
-		days: [
-			{
-				place: 'Rocky Mountain National Park',
-				attractions: ['Bear Lake Trailhead', 'Dream Lake', 'Emerald Lake'],
-				photos: [
-					'https://images.unsplash.com/photo-1492666673288-3c4b4576ad9a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80',
-					'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-					'https://images.unsplash.com/photo-1558517286-8a9cb0b8c793?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1465&q=80',
-				],
-				description:
-					'We will start our hike at the Bear Lake Trailhead and make our way to Dream Lake, where we will have a picnic lunch. From there, we will continue on to Emerald Lake, which is known for its stunning views.',
-			},
-			{
-				place: 'Mount Evans Wilderness Area',
-				attractions: [
-					'Chicago Lakes Trailhead',
-					'Upper Chicago Lake',
-					'Lower Chicago Lake',
-				],
-				photos: [
-					'https://images.unsplash.com/photo-1491510736257-3ad769ff47b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-					'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-					'https://images.unsplash.com/photo-1558517286-8a9cb0b8c793?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1465&q=80',
-				],
-				description:
-					'On day two, we will hike the Chicago Lakes Trailhead in the Mount Evans Wilderness Area. The trail offers breathtaking views of the surrounding mountains and two beautiful lakes, Upper and Lower Chicago Lake.',
-			},
-			{
-				place: 'Indian Peaks Wilderness',
-				attractions: [
-					'Brainard Lake Recreation Area',
-					'Isabelle Glacier Trailhead',
-					'Long Lake',
-				],
-				photos: [
-					'https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80',
-					'https://images.unsplash.com/photo-1491510736257-3ad769ff47b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-					'https://images.unsplash.com/photo-1558517286-8a9cb0b8c793?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1465&q=80',
-				],
-				description:
-					'Our final day of hiking will take us to the Isabelle Glacier Trailhead in the Indian Peaks Wilderness. The trail follows a creek and passes several beautiful lakes, including Long Lake. We will have lunch at the trailhead before making our way back to the trailhead.',
-			},
-		],
-		comments: [
-			{
-				user: '609d6bf96a6d1528f0c9bdef',
-				comment:
-					'The views on this hike were absolutely breathtaking! I highly recommend it.',
-				postedDate: '2022-08-01T00:00:00.000Z',
-			},
-			{
-				user: '609d6bf96a6d1528f0c9bdff',
-				comment:
-					'The hike to Emerald Lake was my favorite. The water was so blue!',
-				postedDate: '2022-08-03T00:00:00.000Z',
-			},
-			{
-				user: '609d6bf96a6d1528f0c9be0',
-				comment:
-					'The Chicago Lakes Trailhead was challenging, but the views were worth it.',
-				postedDate: '2022-08-04T00:00:00.000Z',
-			},
-		],
-		likes: 15,
-		dislikes: 5,
-		bannerImage:
-			'https://images.unsplash.com/photo-1551411444-d4d4b91e729e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-	};
-
 	const userExist = useSelector((state: any) => state.user.userExist);
 	const user = useSelector((state: any) => state.user);
 	const navigate = useNavigate();
+	const [commentBtnText, setCommentBtnText] = useState('Post ✈️');
 
 	const [trip, setTrip] = useState<any>(null);
 	const [comment, setComment] = useState('');
 	let { tripId } = useParams();
+	const [srcImage, setSrcImage] = useState<string>(trip?.bannerImage);
 
 	const handlePostComment = e => {
 		e.preventDefault();
-		var data = {
-			userId: user.id,
-			username: user.username,
-			tripId: tripId,
-			comment: comment,
-		};
-
-		setComment('');
-
-		var config = {
-			method: 'post',
-			maxBodyLength: Infinity,
-			url: 'http://localhost:4000/api/comment/post',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			data: data,
-		};
-
-		axios(config)
-			.then(function (response) {
-				setTrip({ ...trip, comments: response.data.comments });
+		setCommentBtnText('Posting ⏳');
+		postComment(user, tripId, comment)
+			.then(comments => {
+				setTrip({ ...trip, comments: comments });
+				setCommentBtnText('Post ✈️');
 			})
-			.catch(function (error) {
+			.catch(error => {
 				console.log(error);
 			});
+		setComment('');
 	};
 
 	useEffect(() => {
-		console.log({ tripId });
-
-		const options = {
-			method: 'GET',
-			url: 'http://localhost:4000/api/getOne',
-			headers: { id: tripId },
-		};
-
-		axios
-			.request(options)
-			.then(function (response) {
-				const { success, trip: resulttrip } = response.data;
-
-				if (success && resulttrip !== null) {
-					setTrip(resulttrip);
-				}
+		getOneTrip(tripId)
+			.then(resultTrip => {
+				setTrip(resultTrip);
 			})
-			.catch(function (error) {
-				console.error(error);
+			.catch(error => {
+				console.error(error.message);
 			});
 	}, []);
 
@@ -152,13 +50,23 @@ const ViewTrip = () => {
 				<>
 					<h3 className='text-2xl font-bold'>{trip.title}</h3>
 					<img
-						src={trip.bannerImage}
 						alt=''
 						className='object-cover object-center w-full h-64 flex items-center overflow-hidden rounded-lg'
+						src={trip?.bannerImage || './placeholder_image.png'}
+						// onError={() => {
+						// 	setSrcImage('./placeholder_image.png');
+						// }}
 					/>
 					<div className='flex items-center justify-between'>
 						<div className='font-medium'>
-							<span>{trip.createdBy.username} &#x2022; </span>
+							<span
+								className='cursor-pointer'
+								onClick={() =>
+									navigate(`/user/${trip.createdBy.username}`)
+								}
+							>
+								{trip.createdBy.username} &#x2022;{' '}
+							</span>
 							<span>{new Date(trip.createdOn).toUTCString()}</span>
 						</div>
 						<div className='flex gap-2'>
@@ -209,7 +117,7 @@ const ViewTrip = () => {
 										type='submit'
 										className='bg-primary flex-[0.1] hover:bg-primaryDark text-white px-2 py-2 rounded-md'
 									>
-										Post ✈️
+										{commentBtnText}
 									</button>
 								</>
 							) : (

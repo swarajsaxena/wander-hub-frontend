@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { FiEyeOff, FiEye, FiAlertCircle } from 'react-icons/fi';
 import { StyledBox } from './screens.styled';
+import { login, signUp } from '../apiFunctions';
 
 const LogIn = () => {
 	const [activeTab, setActiveTab] = useState(0);
@@ -37,7 +38,7 @@ const LogIn = () => {
 				</li>
 			</ul>
 			{activeTab === 0 && <SignIn />}
-			{activeTab === 1 && <SignUp />}
+			{activeTab === 1 && <SignUp setActiveTab={setActiveTab} />}
 		</StyledBox>
 	);
 };
@@ -57,28 +58,22 @@ const SignIn = () => {
 	const submit = e => {
 		e.preventDefault();
 
-		const options = {
-			method: 'POST',
-			url: 'http://localhost:4000/api/signin',
-			data: { username, password },
-		};
-
-		axios
-			.request(options)
+		login(username, password)
 			.then(function (response) {
-				if (response.data.success) {
+				console.log(response);
+				if (response.success) {
 					dispatch(
 						loginAction({
-							name: response.data.user.name,
-							email: response.data.user.email,
-							username: response.data.user.username,
-							id: response.data.user._id,
+							name: response.user.name,
+							email: response.user.email,
+							username: response.user.username,
+							id: response.user._id,
 						})
 					);
-					Cookies.set('token', response.data.token);
+					Cookies.set('token', response.token);
 					navigate('/');
 				} else {
-					setError(response.data.message);
+					setError(response.message);
 				}
 			})
 			.catch(err => console.log(err));
@@ -161,43 +156,33 @@ const SignIn = () => {
 	);
 };
 
-const SignUp = () => {
+const SignUp = ({ setActiveTab }) => {
 	const [username, setUsername] = useState('');
 	const [password, setpassword] = useState('');
 	const [email, setemail] = useState('');
 	const [fullName, setfullName] = useState('');
 	const [error, setError] = useState('');
+	const [btnText, setBtnText] = useState('Sign Up');
 
 	const handleSignUp = e => {
 		e.preventDefault();
-		var data = {
-			username: username,
-			email: email,
-			password: password,
-			name: fullName,
-		};
-
-		var config = {
-			method: 'post',
-			maxBodyLength: Infinity,
-			url: 'http://localhost:4000/api/signup',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			data: data,
-		};
-
-		axios(config)
+    setBtnText('Loading...')
+		signUp(username, password, email, fullName)
 			.then(function (response) {
-				if (response.data.success) {
-					console.log(response.data);
+				console.log(response);
+
+				if (response.success) {
+					setActiveTab(0);
 				} else {
-					setError(response.data.message);
+					setError(response.message);
 				}
 			})
 			.catch(function (err) {
+				setError(err.message);
 				console.log(err.message);
 			});
+
+		setTimeout(() => setBtnText('Sign Up', 3000));
 	};
 
 	return (
@@ -308,7 +293,7 @@ const SignUp = () => {
 						className='shadow bg-primary hover:bg-primaryDark focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded'
 						type='submit'
 					>
-						Sign Up
+						{btnText}
 					</button>
 				</div>
 			</div>

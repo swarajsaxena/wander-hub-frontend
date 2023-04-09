@@ -10,37 +10,23 @@ import { FiGithub, FiLinkedin } from 'react-icons/fi';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginAction } from './app/features/userSlice';
+import User from './screens/User';
+import ErrorScreen from './screens/ErrorScreen';
+import { getUser } from './apiFunctions';
 
 const App = () => {
 	const dispatch = useDispatch();
+	const userExist = useSelector(state => state.user.userExist);
 	useEffect(() => {
 		const token = Cookies.get('token');
 		if (token) {
-			var config = {
-				method: 'post',
-				maxBodyLength: Infinity,
-				url: 'http://localhost:4000/api/getUser',
-				headers: {
-					auth_token: token,
-				},
-			};
-
-			axios(config)
-				.then(function (response) {
-					if (response.data.success) {
-						dispatch(
-							loginAction({
-								name: response.data.user.name,
-								email: response.data.user.email,
-								username: response.data.user.username,
-								id: response.data.user._id,
-							})
-						);
-					}
+			getUser(token)
+				.then(user => {
+					dispatch(loginAction(user));
 				})
-				.catch(function (error) {
+				.catch(error => {
 					console.log(error.message);
 				});
 		}
@@ -52,9 +38,11 @@ const App = () => {
 				<Navbar />
 				<Routes>
 					<Route path='/' element={<Home />} />
-					<Route path='/login' element={<LogIn />} />
+					{!userExist && <Route path='/login' element={<LogIn />} />}
 					<Route path='/trip/:tripId' element={<ViewTrip />} />
+					<Route path='/user/:userId' element={<User />} />
 					<Route path='/create' element={<CreateTripForm />} />
+					<Route path='/*' rep element={<ErrorScreen />} />
 				</Routes>
 				<div className='border-t border-primaryDark/20 flex flex-col gap-2 justify-center items-center p-8'>
 					<div>Made with MERN Stack and a lots of 💕 by Swaraj Saxena</div>

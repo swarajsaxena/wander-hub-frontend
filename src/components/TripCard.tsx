@@ -24,11 +24,11 @@ const TripCard = ({
 			<div className='h-40 overflow-hidden relative flex items-center'>
 				<img
 					className='w-full transition-all'
-					src={srcImage}
 					alt='Sunset in the mountains'
+					src={srcImage}
 					onError={() => {
 						setSrcImage(
-							'https://static.vecteezy.com/system/resources/thumbnails/001/978/310/small/beautiful-dusk-at-mountains-scenery-free-vector.jpg'
+							'./placeholder_image.png'
 						);
 					}}
 				/>

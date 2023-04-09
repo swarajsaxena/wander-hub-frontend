@@ -5,7 +5,7 @@ const Stepper = ({ days }) => {
 		<div className='flex flex-col gap-2 w-full'>
 			{days.map(({ place, attractions, description, photos }, index) => {
 				return (
-					<div className='flex gap-4 mb-4 max-w-full'>
+					<div className='flex gap-4 mb-4 max-w-full' key={index}>
 						<div className='flex flex-col gap-5'>
 							<div className=' relative bg-primary aspect-square w-10 h-10 flex items-center justify-center text-white rounded-full'>
 								{index + 1}
@@ -31,9 +31,10 @@ const Stepper = ({ days }) => {
 							</div>
 							<div className='text-lg mr-6'>{description}</div>
 							<div className='flex gap-1 sm:gap-2  md:gap-4 mr-6 flex-wrap'>
-								{photos.map(photo => {
+								{photos.map((photo, index) => {
 									return (
 										<div
+											key={index}
 											className='w-[40%] sm:w-28 md:w-36 lg:w-48 aspect-[3/1.75] rounded-md border-2 border-slate-300'
 											style={{
 												backgroundImage: `url('${photo}')`,
