@@ -29,7 +29,7 @@ const ViewTrip = () => {
 				setCommentBtnText('Post ✈️');
 			})
 			.catch(error => {
-				console.log(error);
+				console.error(error.message);
 			});
 		setComment('');
 	};

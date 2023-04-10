@@ -49,6 +49,7 @@ const SignIn = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const [btnText, setBtnText] = useState('Log In');
 
 	const [passVis, setPassVis] = useState(false);
 
@@ -57,10 +58,9 @@ const SignIn = () => {
 
 	const submit = e => {
 		e.preventDefault();
-
+		setBtnText('Loading...⏳');
 		login(username, password)
 			.then(function (response) {
-				console.log(response);
 				if (response.success) {
 					dispatch(
 						loginAction({
@@ -148,7 +148,7 @@ const SignIn = () => {
 						className='shadow bg-primary hover:bg-primaryDark focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded'
 						type='submit'
 					>
-						Login
+						{btnText}
 					</button>
 				</div>
 			</div>
@@ -166,11 +166,9 @@ const SignUp = ({ setActiveTab }) => {
 
 	const handleSignUp = e => {
 		e.preventDefault();
-    setBtnText('Loading...')
+		setBtnText('Loading...');
 		signUp(username, password, email, fullName)
 			.then(function (response) {
-				console.log(response);
-
 				if (response.success) {
 					setActiveTab(0);
 				} else {

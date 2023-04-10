@@ -188,7 +188,6 @@ export const postComment = (user, tripId, comment) => {
 				resolve(response.data.comments);
 			})
 			.catch(error => {
-        console.log("nice", error);
 				reject(error);
 			});
 	});
