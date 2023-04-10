@@ -176,7 +176,7 @@ export const postComment = (user, tripId, comment) => {
 		const config = {
 			method: 'post',
 			maxBodyLength: Infinity,
-			url: 'http://localhost:4000/api/comment/post',
+			url: `${BASE_API_URL}/comment/post`,
 			headers: {
 				'Content-Type': 'application/json',
 			},
